@@ -285,10 +285,7 @@ func main() {
 
 	for {
 		fmt.Println("Введите формулу для расчета:")
-		console, err := reader.ReadString('\n')
-		if err != nil {
-			panic(err)
-		}
+		console, _ := reader.ReadString('\n')
 		result := start(console)
 		fmt.Println("Ответ: ", result)
 	}
