@@ -103,7 +103,7 @@ func whichMap(a, b string) (int, int, bool, bool) {
 	}
 }
 
-// 3. Сумма. Функция определяет сумму параметров, если z == "+".
+// 3. Сумма. Функция определяет сумму параметров, если оператор z == "+".
 func plus(a, b int, usl1, usl2 bool) string {
 	var res string
 	c := a + b
@@ -114,7 +114,7 @@ func plus(a, b int, usl1, usl2 bool) string {
 					res = i
 				}
 			}
-		} else if c > 10 && c < 40 {
+		} else if c > 10 && c <= 20 {
 			s1 := make([]string, 2)
 			s1[0] = strings.Repeat("X", c/10)
 			for i, e := range m1 {
@@ -132,7 +132,7 @@ func plus(a, b int, usl1, usl2 bool) string {
 	return res
 }
 
-// 4. Вычитание. Функция вычитает один параметр из другого, если z == "-".
+// 4. Вычитание. Функция вычитает один параметр из другого, если оператор z == "-".
 // При работе с римскими цифрами выдает ошибку p2, если ответ меньше 0, и ошибку p6, если ответ равен 0.
 func minus(a, b int, usl1, usl2 bool) string {
 	var res string
@@ -155,7 +155,7 @@ func minus(a, b int, usl1, usl2 bool) string {
 	return res
 }
 
-// 5. Произведение. Функция определяет произведение параметров, если z == "*".
+// 5. Произведение. Функция определяет произведение параметров, если оператор z == "*".
 func comp(a, b int, usl1, usl2 bool) string {
 	var res string
 	c := a * b
@@ -230,7 +230,7 @@ func comp(a, b int, usl1, usl2 bool) string {
 	return res
 }
 
-// 6. Деление. Функция делит один параметр на другой, если z == "/".
+// 6. Деление. Функция делит один параметр на другой, если оператор z == "/".
 // При работе с римскими цифрами выдает ошибку p6, если ответ равен 0.
 func div(a, b int, usl1, usl2 bool) string {
 	var res string
@@ -252,7 +252,7 @@ func div(a, b int, usl1, usl2 bool) string {
 }
 
 // 7. Калькулятор. Выводит ответ в зависимости от введенных параметров.
-// Если оператор z не равен заданным в условии задачи +, -, /, *, выводит ошибку p4.
+// Если оператор z != "+", "-", "/", "*", выводит ошибку p4.
 func calc(a2, b2 int, usl1, usl2 bool, z string) string {
 	var result string
 	if z != "+" && z != "-" && z != "*" && z != "/" && z != "" {
@@ -260,13 +260,13 @@ func calc(a2, b2 int, usl1, usl2 bool, z string) string {
 	} else {
 		switch z {
 		case "+":
-			result = fmt.Sprint(plus(a2, b2, usl1, usl2))
+			result = plus(a2, b2, usl1, usl2)
 		case "-":
-			result = fmt.Sprint(minus(a2, b2, usl1, usl2))
+			result = minus(a2, b2, usl1, usl2)
 		case "*":
-			result = fmt.Sprint(comp(a2, b2, usl1, usl2))
+			result = comp(a2, b2, usl1, usl2)
 		case "/":
-			result = fmt.Sprint(div(a2, b2, usl1, usl2))
+			result = div(a2, b2, usl1, usl2)
 		}
 	}
 	return result
@@ -283,9 +283,13 @@ func start(console string) string {
 func main() {
 	reader := bufio.NewReader(os.Stdin)
 
-	for i := 1; i > 0; i++ {
-		console, _ := reader.ReadString('\n')
-		res := start(console)
-		fmt.Println(res)
+	for {
+		fmt.Println("Введите формулу для расчета:")
+		console, err := reader.ReadString('\n')
+		if err != nil {
+			panic(err)
+		}
+		result := start(console)
+		fmt.Println("Ответ: ", result)
 	}
 }
